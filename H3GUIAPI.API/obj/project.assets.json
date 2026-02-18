@@ -2912,11 +2912,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/jon/Programming/C#/H3GUIAPI/H3GUIAPI.API/H3GUIAPI.API.csproj",
+      "projectUniqueName": "/home/jon/Programming/c#/H3GUIAPI/H3GUIAPI.API/H3GUIAPI.API.csproj",
       "projectName": "H3GUIAPI.API",
-      "projectPath": "/home/jon/Programming/C#/H3GUIAPI/H3GUIAPI.API/H3GUIAPI.API.csproj",
+      "projectPath": "/home/jon/Programming/c#/H3GUIAPI/H3GUIAPI.API/H3GUIAPI.API.csproj",
       "packagesPath": "/home/jon/.nuget/packages/",
-      "outputPath": "/home/jon/Programming/C#/H3GUIAPI/H3GUIAPI.API/obj/",
+      "outputPath": "/home/jon/Programming/c#/H3GUIAPI/H3GUIAPI.API/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/jon/.nuget/NuGet/NuGet.Config"
@@ -2997,7 +2997,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/home/jon/.local/share/mise/installs/dotnet/10.0.102/sdk/10.0.102/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "/home/jon/.local/share/mise/installs/dotnet/10.0.103/sdk/10.0.103/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

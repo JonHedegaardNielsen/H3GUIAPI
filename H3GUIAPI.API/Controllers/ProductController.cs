@@ -67,7 +67,9 @@ public class ProductController : ControllerBase
 		}
 	}
 
-	// [HttpGet("")]
-	// public async Task<ImageFilePageData> GetImage()
+	[HttpGet("")]
+	public async Task<ImageFilePageData> GetImage()
+	{
+	}
 
 }
