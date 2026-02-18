@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "rAXwDpShV8Q=",
+  "dgSpecHash": "jGkC8EPdyqA=",
   "success": true,
-  "projectFilePath": "/home/jon/Programming/API/H3GUIAPI/H3GUIAPI.API/H3GUIAPI.API.csproj",
+  "projectFilePath": "/home/jon/Programming/C#/H3GUIAPI/H3GUIAPI.API/H3GUIAPI.API.csproj",
   "expectedPackageFiles": [
     "/home/jon/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/home/jon/.nuget/packages/microsoft.aspnetcore.diagnostics.entityframeworkcore/10.0.2/microsoft.aspnetcore.diagnostics.entityframeworkcore.10.0.2.nupkg.sha512",

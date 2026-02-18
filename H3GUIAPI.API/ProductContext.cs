@@ -7,6 +7,7 @@ public class ProductContext : DbContext
 {
 	public DbSet<Product> Products => Set<Product>();
 	public DbSet<Category> Categories => Set<Category>();
+	public DbSet<ImageFilePageData> ImageFiles => Set<ImageFilePageData>();
 	public string DbPath { get; }
 
 	public ProductContext()
