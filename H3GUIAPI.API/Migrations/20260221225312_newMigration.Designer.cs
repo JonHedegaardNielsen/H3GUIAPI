@@ -2,6 +2,7 @@
 using H3GUIAPI.API;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace H3GUIAPI.API.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    partial class ProductContextModelSnapshot : ModelSnapshot
+    [Migration("20260221225312_newMigration")]
+    partial class newMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.2");
@@ -45,7 +48,7 @@ namespace H3GUIAPI.API.Migrations
 
                     b.HasKey("ImageFilePathDataId");
 
-                    b.ToTable("ImageFilesDatas");
+                    b.ToTable("ImageFiles");
                 });
 
             modelBuilder.Entity("H3GUIAPI.API.Models.Product", b =>
@@ -98,7 +101,8 @@ namespace H3GUIAPI.API.Migrations
 
             modelBuilder.Entity("H3GUIAPI.API.Models.Product", b =>
                 {
-                    b.Navigation("ImageFilePageData");
+                    b.Navigation("ImageFilePageData")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

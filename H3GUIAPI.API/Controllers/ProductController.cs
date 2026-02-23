@@ -8,13 +8,19 @@ namespace H3GUIAPI.API.Models;
 [ApiController]
 public class ProductController : ControllerBase
 {
+	readonly ProductContext _productContext;
+
+	public ProductController(ProductContext productContext)
+	{
+		_productContext = productContext;
+	}
+
 	[HttpGet]
 	public async Task<IEnumerable<Product>> GetAll()
 	{
 		try
 		{
-			using ProductContext context = new();
-			var products = context.Products.Include(p => p.Category);
+			var products = _productContext.Products.Include(p => p.Category);
 			return await products.ToArrayAsync();
 		}
 		catch
@@ -23,29 +29,12 @@ public class ProductController : ControllerBase
 		}
 	}
 
-	[HttpPost]
-	public async Task<ActionResult> Add([FromBody] Product product)
-	{
-		try
-		{
-			using ProductContext context = new();
-			context.Products.Add(product);
-			await context.SaveChangesAsync();
-			return Ok();
-		}
-		catch
-		{
-			return NotFound();
-		}
-	}
-
 	[HttpGet("{id}")]
 	public ActionResult<Product> GetSingle(uint id)
 	{
 		try
 		{
-			using ProductContext context = new();
-			return Ok(context.Products.Single(p => p.ProductId == id));
+			return Ok(_productContext.Products.Single(p => p.ProductId == id));
 		}
 		catch
 		{
@@ -58,8 +47,7 @@ public class ProductController : ControllerBase
 	{
 		try
 		{
-			using ProductContext context = new();
-			return await context.Products.Where(p => p.CategoryId == id).Include(p => p.Category).ToArrayAsync();
+			return await _productContext.Products.Where(p => p.CategoryId == id).Include(p => p.Category).ToArrayAsync();
 		}
 		catch
 		{
@@ -67,9 +55,30 @@ public class ProductController : ControllerBase
 		}
 	}
 
-	[HttpGet("")]
-	public async Task<ImageFilePageData> GetImage()
+	public record PostBody(Product Product, ImageFile ImageFile);
+
+
+	[HttpPost]
+	public async Task<ActionResult> Create([FromBody] PostBody body)
 	{
+		ImageFilePageData imageFilePageData = new(body.ImageFile.FileName) { Product = body.Product };
+
+		try
+		{
+			await _productContext.ImageFilesDatas.AddAsync(imageFilePageData);
+			await _productContext.Products.AddAsync(body.Product);
+			if (!await ImageFile.Save(body.ImageFile))
+			{
+				throw new Exception();
+			}
+			await _productContext.SaveChangesAsync();
+			return Ok();
+		}
+		catch (Exception ex)
+		{
+			return BadRequest("file already exists");
+		}
+
 	}
 
 }

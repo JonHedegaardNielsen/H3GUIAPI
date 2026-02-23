@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("H3GUIAPI.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4a072b06ae175d24a36a0910446360707391d716")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2450c777b6c37a81f263ef83f70284c7864f6e95")]
 [assembly: System.Reflection.AssemblyProductAttribute("H3GUIAPI.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("H3GUIAPI.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

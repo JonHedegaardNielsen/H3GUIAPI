@@ -7,13 +7,18 @@ namespace H3GUIAPI.API.Models
 	[ApiController]
 	public class CategoryController : ControllerBase
 	{
+		ProductContext _productContext;
+
+		public CategoryController(ProductContext productContext)
+		{
+			_productContext = productContext;
+		}
 		[HttpGet]
 		public IEnumerable<Category> GetAll()
 		{
 			try
 			{
-				using ProductContext context = new();
-				return context.Categories.ToArray();
+				return _productContext.Categories.ToArray();
 			}
 			catch
 			{
@@ -25,8 +30,7 @@ namespace H3GUIAPI.API.Models
 		{
 			try
 			{
-				using ProductContext context = new();
-				return Ok(context.Categories.Single(c => c.CategoryId == id));
+				return Ok(_productContext.Categories.Single(c => c.CategoryId == id));
 			}
 			catch
 			{

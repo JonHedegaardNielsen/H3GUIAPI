@@ -2,13 +2,13 @@ namespace H3GUIAPI.API.Models;
 
 public class ImageFilePageData
 {
-	public int ImageFileId { get; set; } = 0;
+	public int ImageFilePathDataId { get; set; } = 0;
 	public string RelativePath { get; set; } = "";
 	public Product Product { get; set; }
-
-	public ImageFilePageData(Product product)
+	public int ProductId { get; private set; }
+	public ImageFilePageData(string relativePath, int ImageFilePathDataId = 0, int productId = 0)
 	{
-		Product = product;
-
+		this.ImageFilePathDataId = ImageFilePathDataId;
+		RelativePath = relativePath;
 	}
 }
