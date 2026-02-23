@@ -1,3 +1,4 @@
+using H3GUIAPI.API.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,14 +17,29 @@ public class ProductController : ControllerBase
 	}
 
 	[HttpGet]
-	public async Task<IEnumerable<Product>> GetAll()
+	public async Task<IEnumerable<ProductGetBody>> GetAll()
 	{
 		try
 		{
-			var products = _productContext.Products.Include(p => p.Category);
-			return await products.ToArrayAsync();
+			var products = await _productContext.Products.Include(p => p.Category)
+				.Select((p) =>
+					new
+					{
+						p.ProductId,
+						p.Title,
+						p.Category,
+						p.Price,
+						Path = p.ImageFilePageData.RelativePath
+					}
+				).ToArrayAsync();
+			List<ProductGetBody> productGetBodies = new(products.Length);
+			foreach (var product in products)
+			{
+				productGetBodies.Add(new ProductGetBody(product.ProductId, product.Title, product.Category, product.Price, await ImageFile.GetFile(product.Path)));
+			}
+			return productGetBodies;
 		}
-		catch
+		catch (Exception ex)
 		{
 			return [];
 		}
@@ -55,18 +71,24 @@ public class ProductController : ControllerBase
 		}
 	}
 
-	public record PostBody(Product Product, ImageFile ImageFile);
 
 
 	[HttpPost]
-	public async Task<ActionResult> Create([FromBody] PostBody body)
+	public async Task<ActionResult> Create([FromBody] ProductCreateBody body)
 	{
-		ImageFilePageData imageFilePageData = new(body.ImageFile.FileName) { Product = body.Product };
+		Product product = new()
+		{
+			Category = body.Category,
+			CategoryId = body.Category.CategoryId,
+			ImageFilePageData = new(body.ImageFile.FileName),
+			Price = body.Price,
+			Title = body.Title,
+		};
 
 		try
 		{
-			await _productContext.ImageFilesDatas.AddAsync(imageFilePageData);
-			await _productContext.Products.AddAsync(body.Product);
+			await _productContext.ImageFilesDatas.AddAsync(product.ImageFilePageData);
+			await _productContext.Products.AddAsync(product);
 			if (!await ImageFile.Save(body.ImageFile))
 			{
 				throw new Exception();

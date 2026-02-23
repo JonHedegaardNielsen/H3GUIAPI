@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace H3GUIAPI.API.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20260128084643_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260223225312_new")]
+    partial class @new
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,18 +34,32 @@ namespace H3GUIAPI.API.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("H3GUIAPI.API.Models.ImageFilePageData", b =>
+                {
+                    b.Property<int>("ImageFilePathDataId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("RelativePath")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ImageFilePathDataId");
+
+                    b.ToTable("ImageFilesDatas");
+                });
+
             modelBuilder.Entity("H3GUIAPI.API.Models.Product", b =>
                 {
-                    b.Property<uint>("ProductId")
+                    b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<uint>("CategoryId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ImageURL")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("ImageFilePageDataId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
@@ -58,6 +72,8 @@ namespace H3GUIAPI.API.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("ImageFilePageDataId");
+
                     b.ToTable("Products");
                 });
 
@@ -69,7 +85,15 @@ namespace H3GUIAPI.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("H3GUIAPI.API.Models.ImageFilePageData", "ImageFilePageData")
+                        .WithMany()
+                        .HasForeignKey("ImageFilePageDataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("ImageFilePageData");
                 });
 #pragma warning restore 612, 618
         }

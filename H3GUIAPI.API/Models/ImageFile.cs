@@ -34,7 +34,8 @@ public record ImageFile(string FileName, string ContentBase64)
 		try
 		{
 			using StreamWriter streamWriter = new(path);
-			streamWriter.Write(path, Convert.FromBase64String(file.ContentBase64));
+			var b = Convert.FromBase64String(file.ContentBase64);
+			await File.WriteAllBytesAsync(path, b);
 		}
 		catch (Exception ex)
 		{

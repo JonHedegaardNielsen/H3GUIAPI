@@ -34,9 +34,7 @@ namespace H3GUIAPI.API.Migrations
             modelBuilder.Entity("H3GUIAPI.API.Models.ImageFilePageData", b =>
                 {
                     b.Property<int>("ImageFilePathDataId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ProductId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("RelativePath")
@@ -71,18 +69,9 @@ namespace H3GUIAPI.API.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("ImageFilePageDataId");
+
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("H3GUIAPI.API.Models.ImageFilePageData", b =>
-                {
-                    b.HasOne("H3GUIAPI.API.Models.Product", "Product")
-                        .WithOne("ImageFilePageData")
-                        .HasForeignKey("H3GUIAPI.API.Models.ImageFilePageData", "ImageFilePathDataId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("H3GUIAPI.API.Models.Product", b =>
@@ -93,11 +82,14 @@ namespace H3GUIAPI.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
-                });
+                    b.HasOne("H3GUIAPI.API.Models.ImageFilePageData", "ImageFilePageData")
+                        .WithMany()
+                        .HasForeignKey("ImageFilePageDataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("H3GUIAPI.API.Models.Product", b =>
-                {
+                    b.Navigation("Category");
+
                     b.Navigation("ImageFilePageData");
                 });
 #pragma warning restore 612, 618

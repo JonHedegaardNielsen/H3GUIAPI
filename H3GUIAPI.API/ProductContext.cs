@@ -23,12 +23,11 @@ public class ProductContext : DbContext
 	{
 		base.OnModelCreating(modelBuilder);
 		modelBuilder.Entity<Product>()
-			.HasOne<ImageFilePageData>(e => e.ImageFilePageData)
-			.WithOne(e => e.Product)
-			.HasForeignKey<ImageFilePageData>(e => e.ImageFilePathDataId);
+			.HasOne<ImageFilePageData>(e => e.ImageFilePageData);
 
 		modelBuilder.Entity<ImageFilePageData>()
 			.HasKey(e => e.ImageFilePathDataId);
+
 	}
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

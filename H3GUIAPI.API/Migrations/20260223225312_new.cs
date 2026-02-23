@@ -5,7 +5,7 @@
 namespace H3GUIAPI.API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class @new : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,15 +24,28 @@ namespace H3GUIAPI.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ImageFilesDatas",
+                columns: table => new
+                {
+                    ImageFilePathDataId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    RelativePath = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImageFilesDatas", x => x.ImageFilePathDataId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
-                    ProductId = table.Column<uint>(type: "INTEGER", nullable: false)
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
                     Price = table.Column<decimal>(type: "TEXT", nullable: false),
-                    ImageURL = table.Column<string>(type: "TEXT", nullable: false),
-                    CategoryId = table.Column<uint>(type: "INTEGER", nullable: false)
+                    CategoryId = table.Column<uint>(type: "INTEGER", nullable: false),
+                    ImageFilePageDataId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,12 +56,23 @@ namespace H3GUIAPI.API.Migrations
                         principalTable: "Categories",
                         principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Products_ImageFilesDatas_ImageFilePageDataId",
+                        column: x => x.ImageFilePageDataId,
+                        principalTable: "ImageFilesDatas",
+                        principalColumn: "ImageFilePathDataId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_ImageFilePageDataId",
+                table: "Products",
+                column: "ImageFilePageDataId");
         }
 
         /// <inheritdoc />
@@ -59,6 +83,9 @@ namespace H3GUIAPI.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "ImageFilesDatas");
         }
     }
 }
