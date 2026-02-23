@@ -19,7 +19,7 @@ public record ImageFile(string FileName, string ContentBase64)
 			var folder = Environment.SpecialFolder.LocalApplicationData;
 			var path = Environment.GetFolderPath(folder);
 			string folderPath = Path.Join(path, "APIImageFiles");
-			if (Directory.Exists(folderPath))
+			if (!Directory.Exists(folderPath))
 			{
 				Directory.CreateDirectory(folderPath);
 			}
@@ -33,11 +33,10 @@ public record ImageFile(string FileName, string ContentBase64)
 		string path = Path.Combine(FolderPath, file.FileName);
 		try
 		{
-			using FileStream fileStream = new(path, FileMode.Create);
-			File.Create(path);
-			File.WriteAllBytes(path, Convert.FromBase64String(file.ContentBase64));
+			using StreamWriter streamWriter = new(path);
+			streamWriter.Write(path, Convert.FromBase64String(file.ContentBase64));
 		}
-		catch
+		catch (Exception ex)
 		{
 			return false;
 		}
