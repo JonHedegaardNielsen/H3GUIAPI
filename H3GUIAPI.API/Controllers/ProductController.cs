@@ -46,11 +46,26 @@ public class ProductController : ControllerBase
 	}
 
 	[HttpGet("{id}")]
-	public ActionResult<Product> GetSingle(uint id)
+	public async Task<ActionResult<ProductGetBody>> GetSingle(uint id)
 	{
 		try
 		{
-			return Ok(_productContext.Products.Single(p => p.ProductId == id));
+
+			var product = await _productContext.Products.Include(p => p.Category)
+				.Select((p) =>
+					new
+					{
+						p.ProductId,
+						p.Title,
+						p.Category,
+						p.Price,
+						Path = p.ImageFilePageData.RelativePath
+					}
+				)
+				.FirstOrDefaultAsync(p => p.ProductId == id);
+
+			ProductGetBody productGetBody = new ProductGetBody(product.ProductId, product.Title, product.Category, product.Price, await ImageFile.GetFile(product.Path));
+			return Ok(productGetBody);
 		}
 		catch
 		{
