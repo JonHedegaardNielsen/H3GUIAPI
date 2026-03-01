@@ -45,6 +45,23 @@ public class ProductController : ControllerBase
 		}
 	}
 
+	[HttpGet("FromCategoryId/{categoryId}")]
+	public async Task<IEnumerable<ProductGetBody>> GetFromCategaory(int categoryId)
+	{
+		try
+		{
+			var products = _productContext.Products.Where((p) => p.Category.CategoryId == categoryId)
+			.Select((p) =>
+				new ProductGetBody(p.ProductId, p.Title, p.Category, p.Price))
+				.ToArray();
+			return products;
+		}
+		catch
+		{
+			return [];
+		}
+	}
+
 	[HttpGet("{id}")]
 	public async Task<ActionResult<ProductGetBody>> GetSingle(uint id)
 	{
@@ -72,20 +89,6 @@ public class ProductController : ControllerBase
 			return NotFound();
 		}
 	}
-
-	[HttpGet("FromCategoryId/{id}")]
-	public async Task<IEnumerable<Product>> GetFromCategoryId(uint id)
-	{
-		try
-		{
-			return await _productContext.Products.Where(p => p.CategoryId == id).Include(p => p.Category).ToArrayAsync();
-		}
-		catch
-		{
-			return [];
-		}
-	}
-
 
 
 	[HttpPost]
