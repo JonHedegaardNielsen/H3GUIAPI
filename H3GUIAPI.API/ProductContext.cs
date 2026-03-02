@@ -27,7 +27,15 @@ public class ProductContext : DbContext
 
 		modelBuilder.Entity<ImageFilePageData>()
 			.HasKey(e => e.ImageFilePathDataId);
-
+		modelBuilder.Entity<ImageFilePageData>()
+			.HasIndex(i => i.RelativePath)
+			.IsUnique();
+		modelBuilder.Entity<Category>()
+			.HasIndex(c => c.Title)
+			.IsUnique();
+		modelBuilder.Entity<Product>()
+			.Property(p => p.CategoryId)
+			.IsRequired();
 	}
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

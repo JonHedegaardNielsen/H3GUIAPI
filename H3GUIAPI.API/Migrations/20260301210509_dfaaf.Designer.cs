@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace H3GUIAPI.API.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20260223225312_new")]
-    partial class @new
+    [Migration("20260301210509_dfaaf")]
+    partial class dfaaf
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,9 @@ namespace H3GUIAPI.API.Migrations
 
                     b.HasKey("CategoryId");
 
+                    b.HasIndex("Title")
+                        .IsUnique();
+
                     b.ToTable("Categories");
                 });
 
@@ -45,6 +48,9 @@ namespace H3GUIAPI.API.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("ImageFilePathDataId");
+
+                    b.HasIndex("RelativePath")
+                        .IsUnique();
 
                     b.ToTable("ImageFilesDatas");
                 });

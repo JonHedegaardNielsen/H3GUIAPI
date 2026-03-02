@@ -5,7 +5,7 @@
 namespace H3GUIAPI.API.Migrations
 {
     /// <inheritdoc />
-    public partial class @new : Migration
+    public partial class sadasd : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,6 +63,18 @@ namespace H3GUIAPI.API.Migrations
                         principalColumn: "ImageFilePathDataId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_Title",
+                table: "Categories",
+                column: "Title",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ImageFilesDatas_RelativePath",
+                table: "ImageFilesDatas",
+                column: "RelativePath",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",

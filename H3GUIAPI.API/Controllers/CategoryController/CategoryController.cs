@@ -37,5 +37,19 @@ namespace H3GUIAPI.API.Models
 				return NotFound();
 			}
 		}
+		[HttpPost]
+		public async Task<ActionResult<Category>> Create([FromBody] Category category)
+		{
+			try
+			{
+				await _productContext.Categories.AddAsync(category);
+				await _productContext.SaveChangesAsync();
+				return Ok(category);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest();
+			}
+		}
 	}
 }

@@ -51,10 +51,22 @@ public class ProductController : ControllerBase
 		try
 		{
 			var products = _productContext.Products.Where((p) => p.Category.CategoryId == categoryId)
-			.Select((p) =>
-				new ProductGetBody(p.ProductId, p.Title, p.Category, p.Price))
-				.ToArray();
-			return products;
+			.Select((p) => new
+			{
+				p.ProductId,
+				p.Title,
+				p.Category,
+				p.Price,
+				p.ImageFilePageData,
+			})
+			.ToArray();
+			List<ProductGetBody> productGetBodies = [];
+			foreach (var product in products)
+			{
+				productGetBodies.Add(new(product.ProductId, product.Title, product.Category, product.Price, await ImageFile.GetFile(product.ImageFilePageData.RelativePath)));
+			}
+
+			return productGetBodies;
 		}
 		catch
 		{
@@ -105,12 +117,15 @@ public class ProductController : ControllerBase
 
 		try
 		{
-			await _productContext.ImageFilesDatas.AddAsync(product.ImageFilePageData);
-			await _productContext.Products.AddAsync(product);
+			product.CategoryId = product.Category.CategoryId;
+			product.Category = null;
+			var entity = await _productContext.Products.AddAsync(product);
+
 			if (!await ImageFile.Save(body.ImageFile))
 			{
 				throw new Exception();
 			}
+
 			await _productContext.SaveChangesAsync();
 			return Ok();
 		}
@@ -118,7 +133,5 @@ public class ProductController : ControllerBase
 		{
 			return BadRequest("file already exists");
 		}
-
 	}
-
 }
