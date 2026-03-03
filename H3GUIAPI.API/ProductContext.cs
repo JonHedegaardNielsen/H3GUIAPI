@@ -36,6 +36,8 @@ public class ProductContext : DbContext
 		modelBuilder.Entity<Product>()
 			.Property(p => p.CategoryId)
 			.IsRequired();
+		modelBuilder.Entity<Category>()
+			.HasData(new("Cooking", 1), new("Self Help", 2), new("Coding", 3), new("Fitness", 4), new("Romancd", 5), new("Horror", 6));
 	}
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
